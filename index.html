@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D-Day Counter</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            /* 한글 지원을 위해 sans-serif 폰트 지정 */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background-color: #f7f7f7;
+        }
+        .content {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .dday {
+            font-size: 3em;
+            font-weight: 900;
+            color: #E91E63; /* D-Day 색상 강조 */
+        }
+    </style>
+</head>
+<body>
+    <div class="content" id="dday-content">이사 가는 날!</div>
+    <div class="dday" id="dday-counter">계산 중...</div>
+
+    <script>
+        // 목표 날짜 설정 (YYYY-MM-DD 형식)
+        const targetDateStr = "2026-02-14";
+        const targetDate = new Date(targetDateStr);
+
+        function updateDDay() {
+            const now = new Date();
+            // 시간대를 고려하여 날짜만 비교하기 위해 자정으로 설정
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const targetDay = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+
+            // 밀리초를 일(day)로 변환
+            const diffTime = targetDay.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            const counterElement = document.getElementById('dday-counter');
+
+            if (diffDays === 0) {
+                counterElement.textContent = "D-Day";
+            } else if (diffDays > 0) {
+                counterElement.textContent = `D-${diffDays}`;
+            } else {
+                counterElement.textContent = `D+${Math.abs(diffDays)}`;
+            }
+        }
+
+        updateDDay();
+        setInterval(updateDDay, 1000 * 60 * 60); // 1시간마다 업데이트 (D-Day는 하루 단위이므로)
+    </script>
+</body>
+</html>
